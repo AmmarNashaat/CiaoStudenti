@@ -5,7 +5,7 @@ struct CodiceFiscaleView: View {
         ZStack {
             Image("codice_fiscale_full")
                 .resizable()
-                .scaledToFill()
+                .scaledToFit()
                 .ignoresSafeArea()
         }
         .navigationTitle("Codice Fiscale")

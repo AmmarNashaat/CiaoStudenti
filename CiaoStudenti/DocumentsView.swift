@@ -32,7 +32,7 @@ struct DocumentsView: View {
                     subtitle: "Open Bank Account",
                     imageName: "bank",
                     buttonTitle: "Go",
-                   // destination: { AnyView(EnrollmentView()) }
+                    destination: { AnyView(BankAccountView()) }
                 )
                 
                 CategoryCard(

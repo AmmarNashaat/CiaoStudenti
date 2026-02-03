@@ -15,7 +15,7 @@ struct ContentView: View {
                 // BOTTOM CONTENT PANEL
                 VStack(spacing: 16) {
 
-                    Text("Naples in Your Pocket")
+                    Text("Your Pocket Guide")
                         .font(.title)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)

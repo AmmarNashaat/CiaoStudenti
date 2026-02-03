@@ -21,7 +21,7 @@ struct VideoPlayerView: View {
                        height: geo.size.height)
                 .clipped()                          // 🔥 REMOVE BLACK BARS
                 .onAppear {
-                    player.isMuted = false
+                    player.isMuted = true
                     player.play()
 
                     NotificationCenter.default.addObserver(

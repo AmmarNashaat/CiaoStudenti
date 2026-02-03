@@ -1,19 +1,18 @@
 import SwiftUI
 
 struct CategoryCard: View {
-
     let title: String
     let subtitle: String
     let imageName: String
     let buttonTitle: String
-    let destination: AnyView?
+    let destination: (() -> AnyView)?
 
     init(
         title: String,
         subtitle: String,
         imageName: String,
         buttonTitle: String,
-        destination: AnyView? = nil
+        destination: (() -> AnyView)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -24,21 +23,25 @@ struct CategoryCard: View {
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-
+            // BACKGROUND IMAGE
             Image(imageName)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 220)
                 .cornerRadius(20)
                 .clipped()
+                .allowsHitTesting(false) // IMPORTANT: Tap passes through
 
+            // GRADIENT OVERLAY
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
                 startPoint: .bottom,
                 endPoint: .top
             )
             .cornerRadius(20)
+            .allowsHitTesting(false) // IMPORTANT: Tap passes through
 
+            // CONTENT LAYER
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title)
@@ -53,16 +56,13 @@ struct CategoryCard: View {
 
                 Spacer()
 
-                if let destination {
-                    NavigationLink {
-                        destination
-                    } label: {
+                if let destination = destination {
+                    NavigationLink(destination: destination()) {
                         goButton
                     }
-                    .buttonStyle(.plain)
+                    .pressableEffect()
                 } else {
-                    goButton
-                        .opacity(0.5)
+                    goButton.opacity(0.5)
                 }
             }
             .padding()
@@ -77,5 +77,6 @@ struct CategoryCard: View {
             .background(Color.white.opacity(0.9))
             .foregroundColor(.black)
             .cornerRadius(20)
+            .contentShape(Rectangle()) // Makes the entire button area tappable
     }
 }

@@ -30,7 +30,7 @@ struct DocumentsView: View {
                 CategoryCard(
                     title: "Bank Account",
                     subtitle: "Open Bank Account",
-                    imageName: "bank",
+                    imageName: "bank account",
                     buttonTitle: "Go",
                    // destination: { AnyView(EnrollmentView()) }
                 )
@@ -38,15 +38,15 @@ struct DocumentsView: View {
                 CategoryCard(
                     title: "ISEE",
                     subtitle: "Ordinary & Parificato",
-                    imageName: "dd",
+                    imageName: "isee",
                     buttonTitle: "Go",
                   //  destination: { AnyView(EnrollmentView()) }
                 )
                 
                 CategoryCard(
                     title: "Residenza & Carta D'Identità",
-                    subtitle: "Residenza & Carta D'Identità",
-                    imageName: "dd",
+                    subtitle: "Identification Cards",
+                    imageName: "residenza",
                     buttonTitle: "Go",
                    // destination: { AnyView(EnrollmentView()) }
                 )

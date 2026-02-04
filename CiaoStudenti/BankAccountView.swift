@@ -12,6 +12,8 @@ struct BankAccount: Identifiable {
 }
 
 struct BankAccountView: View {
+    @Environment(\.dismiss) var dismiss
+    
     let accounts = [
         BankAccount(
             name: "Revolut",
@@ -44,41 +46,81 @@ struct BankAccountView: View {
     ]
 
     var body: some View {
-        NavigationStack {
+        ZStack {
+            // Background to match your new style
+            LinearGradient(colors: [Color.white, Color.gray.opacity(0.08)], startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
             ScrollView {
-                VStack(alignment: .leading, spacing: 25) {
+                VStack(spacing: 20) {
                     
-                    // Header Section
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Banking for Students")
-                            .font(.largeTitle.bold())
-                        Text("Avoid bureaucratic delays with Virtual Banking.")
-                            .font(.subheadline)
+                    // --- 1. COMPACT MASTER KEY TIP AT TOP ---
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "key.fill")
+                                .font(.system(size: 14))
+                                .foregroundColor(.orange)
+                            Text("THE MASTER KEY")
+                                .font(.system(size: 14, weight: .bold, design: .rounded))
+                                .foregroundColor(.orange)
+                        }
+                        
+                        Text("You must have your Codice Fiscale. Visit 'Agenzia delle Entrate' near Via Toledo to apply.")
+                            .font(.system(size: 12))
                             .foregroundColor(.secondary)
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(BlurView(style: .systemUltraThinMaterialLight))
+                    .cornerRadius(16)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.orange.opacity(0.15), lineWidth: 1)
+                    )
                     .padding(.horizontal)
 
-                    // Bank Cards
+                    // --- 2. BANK CARDS ---
                     ForEach(accounts) { bank in
                         BankCardView(bank: bank)
                     }
                     
-                    // Pro Tip: Codice Fiscale
-                    CodiceFiscaleNotice()
-                    
-                    // Traditional Bank Note
-                    TraditionalBankFooter()
+                    // --- 3. TRADITIONAL BANK FOOTER ---
+                    VStack(spacing: 8) {
+                        Text("Need a Physical Branch?")
+                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                        Text("For scholarships (ADISURC), visit Intesa Sanpaolo or UniCredit for a 'Conto Giovani'.")
+                            .font(.system(size: 12))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 40)
+                    }
+                    .padding(.vertical, 20)
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("Bank Accounts")
-            .navigationBarTitleDisplayMode(.inline)
-            .background(Color(.systemGray6))
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            // --- 4. ENLARGED CUSTOM TITLE ---
+            ToolbarItem(placement: .principal) {
+                Text("BANK ACCOUNTS")
+                    .font(.system(size: 19, weight: .black, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
+                }
+            }
         }
     }
 }
 
-// 2. BANK CARD COMPONENT
+// 2. BANK CARD COMPONENT (Upgraded with Glassmorphism)
 struct BankCardView: View {
     let bank: BankAccount
     
@@ -91,79 +133,54 @@ struct BankCardView: View {
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(bank.name)
-                        .font(.title2.bold())
+                        .font(.title3.bold())
                     Text("IBAN: \(bank.ibanType)")
                         .font(.caption.bold())
                         .foregroundColor(bank.color)
                 }
                 Spacer()
+                
+                // "Digital" Tag
+                Text("VIRTUAL")
+                    .font(.system(size: 10, weight: .black))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(bank.color.opacity(0.1))
+                    .foregroundColor(bank.color)
+                    .clipShape(Capsule())
             }
             
             Text("**Best For:** \(bank.bestFor)")
-                .font(.subheadline)
+                .font(.system(size: 13))
                 .foregroundColor(.primary)
 
             VStack(alignment: .leading, spacing: 10) {
                 Text("OPENING STEPS")
-                    .font(.caption2.bold())
+                    .font(.system(size: 10, weight: .black))
                     .tracking(1)
                     .foregroundColor(.secondary)
                 
                 ForEach(bank.steps, id: \.self) { step in
                     HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: "circle.fill")
-                            .font(.system(size: 6))
-                            .padding(.top, 6)
-                            .foregroundColor(bank.color)
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(bank.color.opacity(0.5))
+                            .padding(.top, 2)
                         Text(step)
-                            .font(.subheadline)
+                            .font(.system(size: 13))
+                            .foregroundColor(.secondary)
                     }
                 }
             }
         }
         .padding(20)
-        .background(Color.white)
+        .background(BlurView(style: .systemUltraThinMaterialLight))
         .cornerRadius(22)
-        .shadow(color: .black.opacity(0.04), radius: 10, x: 0, y: 5)
+        .overlay(
+            RoundedRectangle(cornerRadius: 22)
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.03), radius: 10, x: 0, y: 5)
         .padding(.horizontal)
-    }
-}
-
-// 3. CODICE FISCALE ALERT
-struct CodiceFiscaleNotice: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "key.fill")
-                Text("The Master Key: Codice Fiscale")
-            }
-            .font(.headline)
-            .foregroundColor(.orange)
-            
-            Text("Whether digital or traditional, you **must** have your Italian Tax Code. Visit the 'Agenzia delle Entrate' office in Naples (near Via Toledo or Vomero) to apply.")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .padding()
-        .background(Color.orange.opacity(0.08))
-        .cornerRadius(18)
-        .padding(.horizontal)
-    }
-}
-
-// 4. TRADITIONAL BANK FOOTER
-struct TraditionalBankFooter: View {
-    var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            Text("Need a Physical Branch?")
-                .font(.headline)
-            Text("If you require a local bank for scholarships (like ADISURC), visit Intesa Sanpaolo or UniCredit and ask for a 'Conto Giovani'.")
-                .font(.caption)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.secondary)
-        }
-        .padding()
-        .padding(.bottom, 20)
-        .frame(maxWidth: .infinity)
     }
 }

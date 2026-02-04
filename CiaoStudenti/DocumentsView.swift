@@ -40,7 +40,7 @@ struct DocumentsView: View {
                     subtitle: "Ordinary & Parificato",
                     imageName: "isee",
                     buttonTitle: "Go",
-                  //  destination: { AnyView(EnrollmentView()) }
+                    destination: { AnyView(ISEEScreenView()) }
                 )
                 
                 CategoryCard(
@@ -48,7 +48,7 @@ struct DocumentsView: View {
                     subtitle: "Identification Cards",
                     imageName: "residenza",
                     buttonTitle: "Go",
-                   // destination: { AnyView(EnrollmentView()) }
+                   destination: { AnyView(ResidencyView()) }
                 )
             }
             .padding()

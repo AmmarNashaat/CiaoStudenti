@@ -1,94 +1,70 @@
 import SwiftUI
-import MapKit
 
 struct AdisurcOfficesView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                
-                // --- SECTION: CENTRAL HEADQUARTERS ---
-                OfficeSectionHeader(title: "Main Administrative Seat", icon: "building.columns.fill")
-                
-                OfficeLocationCard(
-                    locationName: "Central Headquarters",
-                    address: "Via Alcide De Gasperi, 45, Naples",
-                    details: "Near Piazza Municipio. Main seat for legal and administrative management."
-                )
-                
-                Divider().padding(.vertical, 8)
-                
-                // --- SECTION: FRONT OFFICES ---
-                OfficeSectionHeader(title: "Territorial Information Points", icon: "mappin.and.ellipse")
-                
-                VStack(spacing: 16) {
-                    OfficeLocationCard(
-                        locationName: "Naples 1 (Central)",
+        ZStack {
+            Color(.systemGroupedBackground).ignoresSafeArea()
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    // --- 1. CENTRAL HEADQUARTERS ---
+                    SharedOfficeHeader(title: "Main Administrative Seat", icon: "building.columns.fill")
+                    
+                    SharedOfficeCard(
+                        locationName: "Central Headquarters",
                         address: "Via Alcide De Gasperi, 45, Naples",
-                        details: "Main info desk for the city center area (Mezzanine floor)."
+                        details: "Near Piazza Municipio. Main seat for legal and administrative management."
                     )
                     
-                    OfficeLocationCard(
-                        locationName: "Naples 2 (Fuorigrotta)",
-                        address: "Piazzale Vincenzo Tecchio, 80, Naples",
-                        details: "Located in the Engineering area."
-                    )
+                    // --- 2. SHARED PRO TIP ---
+                    SharedProTip(title: "PRO TIP", text: "Open Mon–Fri, 9:00 AM – 1:00 PM. Check the 'Avvisi' section on the website before visiting for changes.")
                     
-                    OfficeLocationCard(
-                        locationName: "Naples 3 (Monte Sant'Angelo)",
-                        address: "Via Cinthia, 26, Naples",
-                        details: "Complex Building 1."
-                    )
+                    Divider().padding(.vertical, 8)
                     
-                    OfficeLocationCard(
-                        locationName: "Salerno (Fisciano)",
-                        address: "Via della Tecnica, 5, Fisciano",
-                        details: "Fisciano Campus, 1st Floor."
-                    )
+                    // --- 3. TERRITORIAL POINTS ---
+                    SharedOfficeHeader(title: "Territorial Information Points", icon: "mappin.and.ellipse")
                     
-                    OfficeLocationCard(
-                        locationName: "Caserta",
-                        address: "Viale Abramo Lincoln, 5, Caserta",
-                        details: "At the 'Dal Casertano' facility."
-                    )
-                    
-                    OfficeLocationCard(
-                        locationName: "Benevento",
-                        address: "Via San Pasquale, 11, Benevento",
-                        details: "Located inside the Residence."
-                    )
-                }
-
-                // --- PRO TIP AT THE BOTTOM ---
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Image(systemName: "lightbulb.fill")
-                            .foregroundColor(.orange)
-                        Text("PRO TIP")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                    VStack(spacing: 12) {
+                        SharedOfficeCard(
+                            locationName: "Naples 1 (Central)",
+                            address: "Via Alcide De Gasperi, 45, Naples",
+                            details: "Main info desk (Mezzanine floor)."
+                        )
+                        
+                        SharedOfficeCard(
+                            locationName: "Naples 2 (Fuorigrotta)",
+                            address: "Piazzale Vincenzo Tecchio, 80, Naples",
+                            details: "Located in the Engineering area."
+                        )
+                        
+                        SharedOfficeCard(
+                            locationName: "Naples 3 (Monte Sant'Angelo)",
+                            address: "Via Cinthia, 26, Naples",
+                            details: "Complex Building 1."
+                        )
+                        
+                        SharedOfficeCard(
+                            locationName: "Salerno (Fisciano)",
+                            address: "Via della Tecnica, 5, Fisciano",
+                            details: "Fisciano Campus, 1st Floor."
+                        )
                     }
                     
-                    Text("Most info points are open Monday to Friday, 9:00 AM – 1:00 PM. Always check the 'Avvisi' section on the ADISURC website before visiting, as hours may change.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    Spacer(minLength: 30)
                 }
                 .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.orange.opacity(0.1))
-                .cornerRadius(16)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.orange.opacity(0.3), lineWidth: 1)
-                )
             }
-            .padding()
         }
-        .navigationTitle("ADISURC OFFICES")
-        .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("ADISURC OFFICES")
+                    .font(.system(size: 18, weight: .black, design: .rounded))
+            }
+            
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")

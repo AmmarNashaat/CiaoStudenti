@@ -34,106 +34,157 @@ struct EmergencyView: View {
     @StateObject var locationManager = LocationManager()
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                
-                // --- UNIVERSAL 112 BUTTON ---
-                Button(action: { callNumber("112") }) {
-                    HStack {
-                        Image(systemName: "phone.fill.badge.plus")
-                            .font(.title)
-                        VStack(alignment: .leading) {
-                            Text("Universal Emergency")
-                                .font(.headline)
-                            Text("Police, Fire, or Medical")
-                                .font(.subheadline)
+        ZStack {
+            Color(.systemGroupedBackground).ignoresSafeArea()
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    // --- 1. CURRENT LOCATION CARD ---
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Image(systemName: "mappin.and.ellipse")
+                                .foregroundColor(.blue)
+                            Text("Your Current Location")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                            Spacer()
+                            
+                            Button(action: {
+                                UIPasteboard.general.string = locationManager.addressString
+                            }) {
+                                Image(systemName: "doc.on.doc")
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                            }
                         }
-                        Spacer()
-                        Text("112")
-                            .font(.title2.bold())
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(locationManager.addressString)
+                                .font(.system(size: 19, weight: .bold, design: .rounded))
+                            
+                            if !locationManager.coordinatesString.isEmpty {
+                                Text(locationManager.coordinatesString)
+                                    .font(.system(.caption, design: .monospaced))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        Text("Read this to the operator or tap the icon to copy.")
+                            .font(.system(size: 11))
+                            .foregroundColor(.blue)
+                            .padding(.top, 2)
                     }
                     .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                }
-                .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(16)
+                    .padding(.horizontal)
 
-                // --- CURRENT LOCATION CARD (Integrated with Copy Button) ---
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Image(systemName: "mappin.and.ellipse")
-                            .foregroundColor(.blue)
-                        Text("Your Current Location")
-                            .font(.headline)
-                        Spacer()
-                        
-                        // Added the Copy Button here inside the card
-                        Button(action: {
-                            UIPasteboard.general.string = locationManager.addressString
-                        }) {
-                            Image(systemName: "doc.on.doc")
-                                .font(.caption)
-                                .foregroundColor(.blue)
+                    // --- 2. UNIVERSAL 112 BUTTON ---
+                    Button(action: { callNumber("112") }) {
+                        HStack {
+                            Image(systemName: "phone.fill.badge.plus")
+                                .font(.title)
+                            VStack(alignment: .leading) {
+                                Text("Universal Emergency")
+                                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                                Text("Police, Fire, or Medical")
+                                    .font(.system(size: 13))
+                            }
+                            Spacer()
+                            Text("112")
+                                .font(.system(size: 24, weight: .black, design: .rounded))
                         }
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(16)
                     }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(locationManager.addressString)
-                            .font(.title3.bold())
-                            
-                        if !locationManager.coordinatesString.isEmpty {
-                            Text(locationManager.coordinatesString)
-                                .font(.caption)
+                    .padding(.horizontal)
+
+                    // --- 3. GUARDIA MEDICA SECTION ---
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            Image(systemName: "stethoscope")
+                                .foregroundColor(.green)
+                            Text("Guardia Medica")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                        }
+                        .padding(.horizontal)
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("For non-emergencies when your GP is closed.")
+                                .font(.system(size: 13))
                                 .foregroundColor(.secondary)
+                            
+                            EmergencyCallRow(label: "Naples City Center", number: "081 254 9111", icon: "phone.fill", color: Color.green)
+                        }
+                        .padding(.horizontal)
+                    }
+
+                    // --- 4. DIRECT EMERGENCY LINES ---
+                    EmergencySectionView(title: "Direct Emergency Lines", icon: "phone.circle.fill") {
+                        VStack(spacing: 12) {
+                            EmergencyCallRow(label: "Ambulance / Medical", number: "118", icon: "cross.case.fill", color: Color.red)
+                            EmergencyCallRow(label: "State Police", number: "113", icon: "shield.fill", color: Color.blue)
+                            EmergencyCallRow(label: "Fire Department", number: "115", icon: "flame.fill", color: Color.orange)
                         }
                     }
+
+                    // --- 5. FIRST AID TIPS LINK ---
+                    Link(destination: URL(string: "https://www.redcross.org.uk/first-aid/learn-first-aid")!) {
+                        HStack {
+                            Image(systemName: "heart.text.square.fill")
+                                .font(.title2)
+                            Text("Learn Basic First Aid Tips")
+                                .font(.system(size: 16, weight: .bold, design: .rounded))
+                            Spacer()
+                            Image(systemName: "arrow.up.right")
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .foregroundColor(.red)
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.red.opacity(0.3), lineWidth: 1)
+                        )
+                    }
+                    .padding(.horizontal)
                     
-                    Text("Read this to the operator or tap the icon to copy.")
-                        .font(.caption2)
-                        .foregroundColor(.blue)
-                        .padding(.top, 2)
+                    Spacer(minLength: 30)
                 }
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.blue.opacity(0.1))
-                .cornerRadius(15)
-                .padding(.horizontal)
-
-                // --- DIRECT EMERGENCY LINES ---
-                EmergencySection(title: "Direct Emergency Lines") {
-                    VStack(spacing: 12) {
-                        EmergencyCallRow(label: "Ambulance / Medical", number: "118", icon: "cross.case.fill", color: .red)
-                        EmergencyCallRow(label: "State Police", number: "113", icon: "shield.fill", color: .blue)
-                        EmergencyCallRow(label: "Fire Department", number: "115", icon: "flame.fill", color: .orange)
-                    }
-                }
-
-                // --- STUDENT & SOCIAL SUPPORT ---
-                EmergencySection(title: "Student & Social Support", icon: "person.2.fill") {
-                    VStack(spacing: 12) {
-                        EmergencyCallRow(label: "Women's Anti-Violence", number: "1522", icon: "hand.raised.fill", color: .purple)
-                        EmergencyCallRow(label: "Child Protection", number: "114", icon: "figure.and.child.holdinghands", color: .pink)
-                        EmergencyCallRow(label: "Roadside Assistance (ACI)", number: "803116", icon: "car.fill", color: .gray)
-                    }
+                .padding(.vertical)
+            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("EMERGENCY")
+                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
                 }
             }
-            .padding(.vertical)
         }
-        .navigationTitle("EMERGENCY")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     func callNumber(_ number: String) {
-        if let url = URL(string: "tel://\(number)") {
+        let cleanNumber = number.replacingOccurrences(of: " ", with: "")
+        if let url = URL(string: "tel://\(cleanNumber)") {
             UIApplication.shared.open(url)
         }
     }
 }
 
-// --- 3. SUPPORTING COMPONENTS ---
+// --- 3. SUPPORTING COMPONENTS (MUST BE AT THE BOTTOM) ---
 
-struct EmergencySection<Content: View>: View {
+struct EmergencySectionView<Content: View>: View {
     var title: String
     var icon: String? = nil
     let content: Content
@@ -148,7 +199,8 @@ struct EmergencySection<Content: View>: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 if let iconName = icon { Image(systemName: iconName).foregroundColor(.blue) }
-                Text(title).font(.headline)
+                Text(title)
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
             }
             content
         }
@@ -164,7 +216,8 @@ struct EmergencyCallRow: View {
     
     var body: some View {
         Button(action: {
-            if let url = URL(string: "tel://\(number)") {
+            let cleanNumber = number.replacingOccurrences(of: " ", with: "")
+            if let url = URL(string: "tel://\(cleanNumber)") {
                 UIApplication.shared.open(url)
             }
         }) {
@@ -172,16 +225,24 @@ struct EmergencyCallRow: View {
                 Image(systemName: icon)
                     .foregroundColor(color)
                     .frame(width: 30)
-                Text(label).foregroundColor(.primary)
+                Text(label)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(.primary)
                 Spacer()
                 HStack(spacing: 8) {
-                    Text(number).foregroundColor(color).bold()
-                    Image(systemName: "phone.fill").font(.caption2).foregroundColor(.secondary)
+                    Text(number)
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .foregroundColor(color)
+                    Image(systemName: "phone.fill")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
                 }
             }
             .padding()
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(10)
+            .background(Color.white)
+            .cornerRadius(12)
+            .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
         }
+        .buttonStyle(.plain)
     }
 }

@@ -69,46 +69,88 @@ struct FoodCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            HStack {
-                Image(systemName: dish.icon)
-                    .font(.title)
-                    .foregroundColor(.orange)
-                    .frame(width: 50, height: 50)
-                    .background(Color.orange.opacity(0.1))
-                    .clipShape(Circle())
-                
-                VStack(alignment: .leading) {
-                    Text(dish.category.uppercased())
-                        .font(.caption2.bold())
-                        .foregroundColor(.secondary)
-                    Text(dish.name)
-                        .font(.title3.bold())
+            HStack(spacing: 12) {
+                // Icon Container
+                ZStack {
+                    Circle()
+                        .fill(Color.orange.opacity(0.1))
+                        .frame(width: 50, height: 50)
+                    Image(systemName: dish.icon)
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.orange)
                 }
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(dish.category.uppercased())
+                        .font(.system(size: 10, weight: .black, design: .rounded))
+                        .foregroundColor(.orange)
+                    
+                    Text(dish.name)
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                }
+                
                 Spacer()
+                
                 Text(dish.priceRange)
-                    .font(.subheadline.bold())
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
                     .foregroundColor(.green)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.green.opacity(0.1))
+                    .cornerRadius(8)
             }
             
             Text(dish.description)
-                .font(.subheadline)
-                .foregroundColor(.primary.opacity(0.8))
+                .font(.system(size: 14))
+                .foregroundColor(.secondary)
+                .lineLimit(3)
             
             Divider()
             
-            HStack {
-                Image(systemName: "mappin.and.ellipse")
-                    .foregroundColor(.red)
-                Text("Must try at: ")
-                    .font(.caption.bold())
-                Text(dish.bestSpot)
-                    .font(.caption)
-                    .foregroundColor(.blue)
+            // --- CLICKABLE MAP LINK ---
+            Button(action: {
+                openMap(for: dish.bestSpot)
+            }) {
+                HStack(alignment: .top, spacing: 6) {
+                    Image(systemName: "mappin.and.ellipse")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(.red)
+                        .padding(.top, 2)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("MUST TRY AT:")
+                            .font(.system(size: 10, weight: .black, design: .rounded))
+                            .foregroundColor(.secondary)
+                        
+                        HStack(spacing: 4) {
+                            Text(dish.bestSpot)
+                                .font(.system(size: 13, weight: .bold, design: .rounded))
+                                .foregroundColor(.blue) // Standard link color
+                                .underline() // Makes it look like a web link
+                            
+                            Image(systemName: "arrow.up.right")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(.blue)
+                        }
+                    }
+                    Spacer()
+                }
             }
+            .buttonStyle(PlainButtonStyle()) // Keeps the text color blue instead of graying out
         }
-        .padding()
+        .padding(16)
         .background(Color.white)
-        .cornerRadius(18)
-        .shadow(color: .black.opacity(0.08), radius: 10, x: 0, y: 5)
+        .cornerRadius(20)
+        .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 4)
+        .padding(.horizontal)
+    }
+    
+    // Function to open the spot in Maps
+    func openMap(for spot: String) {
+        let address = spot.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        if let url = URL(string: "maps://?q=\(address)") {
+            UIApplication.shared.open(url)
+        }
     }
 }

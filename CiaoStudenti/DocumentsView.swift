@@ -1,58 +1,46 @@
 import SwiftUI
 
-struct DocumentsView: View {
+struct CategoriesView: View {
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                CategoryCard(
-                    title: "Codice Fiscale",
-                    subtitle: "Italian tax identification",
-                    imageName: "codice",
-                    buttonTitle: "Go",
-                    destination: { AnyView(CodiceFiscaleView()) }
-                )
+        ZStack {
+            Color(.systemGroupedBackground).ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    // This calls DocumentsView, which should live in its own file
+                    CategoryCard(
+                        title: "DOCUMENTS",
+                        subtitle: "All required papers & forms",
+                        imageName: "documents",
+                        destination: { AnyView(DocumentsView()) }
+                    )
 
-                CategoryCard(
-                    title: "Permesso Di Soggiorno",
-                    subtitle: "Residence permit",
-                    imageName: "permesso",
-                    buttonTitle: "Go",
-                    destination: { AnyView(PermessoView()) }
-                )
+                    CategoryCard(
+                        title: "ADISURC",
+                        subtitle: "University services & support",
+                        imageName: "adisurc",
+                        destination: { AnyView(AdisurcView()) }
+                    )
 
-                CategoryCard(
-                    title: "Enrollment",
-                    subtitle: "University registration",
-                    imageName: "enrollment",
-                    buttonTitle: "Go",
-                    destination: { AnyView(EnrollmentView()) }
-                )
-                CategoryCard(
-                    title: "Bank Account",
-                    subtitle: "Open Bank Account",
-                    imageName: "bank account",
-                    buttonTitle: "Go",
-                    destination: { AnyView(BankAccountView()) }
-                )
-                
-                CategoryCard(
-                    title: "ISEE",
-                    subtitle: "Ordinary & Parificato",
-                    imageName: "isee",
-                    buttonTitle: "Go",
-                    destination: { AnyView(ISEEScreenView()) }
-                )
-                
-                CategoryCard(
-                    title: "Residenza & Carta D'Identità",
-                    subtitle: "Identification Cards",
-                    imageName: "residenza",
-                    buttonTitle: "Go",
-                   destination: { AnyView(ResidencyView()) }
-                )
+                    CategoryCard(
+                        title: "INFORMATION",
+                        subtitle: "Living, studying & daily life",
+                        imageName: "information",
+                        destination: { AnyView(InformationView()) }
+                    )
+                }
+                .padding(.top, 10)
+                .padding(.horizontal)
             }
-            .padding()
         }
-        .navigationTitle("Documents")
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("CATEGORIES")
+                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+        }
     }
 }

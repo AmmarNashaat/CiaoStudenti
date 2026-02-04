@@ -1,32 +1,53 @@
 import SwiftUI
 
 struct InformationView: View {
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
+        ZStack {
+            Color(.systemGroupedBackground).ignoresSafeArea()
+            
+            ScrollView {
+                VStack(spacing: 20) {
 
-                CategoryCard(title: "Emergency",
-                             subtitle: "Important emergency numbers",
-                             imageName: "emergency",
-                             buttonTitle: "Go",
-                             destination: { AnyView(EmergencyView()) })
+                    CategoryCard(
+                        title: "EMERGENCY",
+                        subtitle: "Important emergency numbers",
+                        imageName: "emergency",
+                        destination: { AnyView(EmergencyView()) }
+                    )
 
-                CategoryCard(title: "Traditional Food",
-                             subtitle: "Must-try local dishes",
-                             imageName: "food",
-                             buttonTitle: "Go",
-                            destination: { AnyView(TraditionalFoodView()) })
+                    CategoryCard(
+                        title: "TRADITIONAL FOOD",
+                        subtitle: "Must-try local dishes",
+                        imageName: "food",
+                        destination: { AnyView(TraditionalFoodView()) }
+                    )
 
-                CategoryCard(title: "City Safety Map",
-                             subtitle: "Safest & dangerous areas",
-                             imageName: "map",
-                             buttonTitle: "Go",
-                            destination: { AnyView(SafetyMapView()) })
+                    CategoryCard(
+                        title: "CITY SAFETY MAP",
+                        subtitle: "Safest & dangerous areas",
+                        imageName: "map",
+                        destination: { AnyView(SafetyMapView()) }
+                    )
+                }
+                .padding()
             }
-            .padding()
         }
-        .navigationTitle("Information")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("INFORMATION")
+                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
+                }
+            }
+        }
     }
 }
-

@@ -1,82 +1,133 @@
 import SwiftUI
 
+
+
 struct CategoryCard: View {
+
     let title: String
+
     let subtitle: String
+
     let imageName: String
-    let buttonTitle: String
+
     let destination: (() -> AnyView)?
 
-    init(
-        title: String,
-        subtitle: String,
-        imageName: String,
-        buttonTitle: String,
-        destination: (() -> AnyView)? = nil
-    ) {
-        self.title = title
-        self.subtitle = subtitle
-        self.imageName = imageName
-        self.buttonTitle = buttonTitle
-        self.destination = destination
-    }
+
 
     var body: some View {
+
+        if let destination = destination {
+
+            NavigationLink(destination: destination()) {
+
+                cardContent
+
+            }
+
+            .buttonStyle(PlainButtonStyle())
+
+        } else {
+
+            cardContent.opacity(0.8)
+
+        }
+
+    }
+
+
+
+    private var cardContent: some View {
+
+        // We set the frame on the ZStack to ensure the whole area is defined
+
         ZStack(alignment: .bottomLeading) {
-            // BACKGROUND IMAGE
+
+            
+
+            // 1. BACKGROUND IMAGE
+
             Image(imageName)
+
                 .resizable()
+
                 .scaledToFill()
-                .frame(height: 220)
-                .cornerRadius(20)
+
+                .frame(height: 200)
+
+                .frame(maxWidth: .infinity) // Ensures image fills width
+
+                .cornerRadius(24)
+
                 .clipped()
-                .allowsHitTesting(false) // IMPORTANT: Tap passes through
 
-            // GRADIENT OVERLAY
+
+
+            // 2. GRADIENT OVERLAY
+
             LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(0.6), Color.clear]),
-                startPoint: .bottom,
-                endPoint: .top
-            )
-            .cornerRadius(20)
-            .allowsHitTesting(false) // IMPORTANT: Tap passes through
 
-            // CONTENT LAYER
-            HStack {
-                VStack(alignment: .leading, spacing: 6) {
+                gradient: Gradient(colors: [Color.black.opacity(0.85), Color.black.opacity(0.2), Color.clear]),
+
+                startPoint: .bottom,
+
+                endPoint: .top
+
+            )
+
+            .cornerRadius(24)
+
+
+
+            // 3. CONTENT LAYER
+
+            HStack(alignment: .bottom) {
+
+                VStack(alignment: .leading, spacing: 4) {
+
                     Text(title)
-                        .font(.title2)
-                        .fontWeight(.bold)
+
+                        .font(.system(size: 24, weight: .black, design: .rounded))
+
                         .foregroundColor(.white)
 
+
+
                     Text(subtitle)
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.85))
+
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+
+                        .foregroundColor(.white.opacity(0.9))
+
                 }
+
+
 
                 Spacer()
 
-                if let destination = destination {
-                    NavigationLink(destination: destination()) {
-                        goButton
-                    }
-                    .pressableEffect()
-                } else {
-                    goButton.opacity(0.5)
-                }
+
+
+                Image(systemName: "chevron.right")
+
+                    .font(.system(size: 18, weight: .bold))
+
+                    .foregroundColor(.white)
+
+                    .padding(.bottom, 4)
+
             }
-            .padding()
+
+            .padding(24)
+
         }
+
+        .frame(height: 200)
+
+        // IMPORTANT: Makes the entire transparent/empty area of the card tappable
+
+        .contentShape(Rectangle())
+
+        .shadow(color: Color.black.opacity(0.12), radius: 10, x: 0, y: 5)
+
     }
 
-    private var goButton: some View {
-        Text(buttonTitle)
-            .fontWeight(.bold)
-            .padding(.horizontal, 18)
-            .padding(.vertical, 8)
-            .background(Color.white.opacity(0.9))
-            .foregroundColor(.black)
-            .cornerRadius(20)
-            .contentShape(Rectangle()) // Makes the entire button area tappable
-    }
 }

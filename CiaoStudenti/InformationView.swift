@@ -9,12 +9,33 @@ struct InformationView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-
+                    
                     CategoryCard(
-                        title: "EMERGENCY",
-                        subtitle: "Important emergency numbers",
-                        imageName: "emergency",
-                        destination: { AnyView(EmergencyView()) }
+                        title: "ACADEMY",
+                        subtitle: "Skills Development",
+                        imageName: "academy",
+                        destination: { AnyView(AcademyView()) }
+                    )
+                    
+                    CategoryCard(
+                        title: "ERASMUS INFORMATION",
+                        subtitle: "Erasmus & Mobility",
+                        imageName: "erasmus",
+                        destination: { AnyView(ErasmusView()) }
+                    )
+                    
+                    CategoryCard(
+                        title: "STUDENT TRANSPORTATION",
+                        subtitle: "Travel Pass Information",
+                        imageName: "transport",
+                        destination: { AnyView(TransportView()) }
+                    )
+                    
+                    CategoryCard(
+                        title: "LEARN ITALIAN LANGUAGE",
+                        subtitle: "Start learning a new language",
+                        imageName: "language",
+                        destination: { AnyView(LanguageClassesView()) }
                     )
 
                     CategoryCard(
@@ -23,13 +44,14 @@ struct InformationView: View {
                         imageName: "food",
                         destination: { AnyView(TraditionalFoodView()) }
                     )
-
+                    
                     CategoryCard(
-                        title: "CITY SAFETY MAP",
-                        subtitle: "Safest & dangerous areas",
-                        imageName: "map",
-                        destination: { AnyView(SafetyMapView()) }
+                        title: "EMERGENCY",
+                        subtitle: "Important emergency numbers",
+                        imageName: "emergency",
+                        destination: { AnyView(EmergencyView()) }
                     )
+                    
                 }
                 .padding()
             }
@@ -38,7 +60,7 @@ struct InformationView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("INFORMATION")
-                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .font(.system(size: 22, weight: .black, design: .rounded))
                     .foregroundColor(.primary)
             }
             ToolbarItem(placement: .navigationBarLeading) {

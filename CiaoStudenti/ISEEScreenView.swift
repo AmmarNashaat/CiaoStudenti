@@ -10,7 +10,7 @@ struct ISEEScreenView: View {
                  iconName: "folder.fill"),
         
         StepItem(stepNumber: 2, title: "INCOME RECORDS",
-                 description: "Get family income and asset records from 2024 (translated if necessary).",
+                 description: "Get family income and asset records of past year (translated if necessary).",
                  iconName: "eurosign.square.fill"),
         
         StepItem(stepNumber: 3, title: "CAF APPOINTMENT",
@@ -18,7 +18,7 @@ struct ISEEScreenView: View {
                  iconName: "calendar.badge.plus"),
         
         StepItem(stepNumber: 4, title: "PORTAL SUBMISSION",
-                 description: "Submit the final ISEE value to the University 'Segreteria Online'.",
+                 description: "Login to Adisurc Portal and Submit the ISEE Parificato.",
                  iconName: "tray.and.arrow.up.fill")
     ]
     
@@ -92,10 +92,10 @@ struct ISEEScreenView: View {
                                 .foregroundColor(.teal)
                                 .padding(.top, 10)
                             
-                            Text("ISEE Completed!")
+                            Text("All Steps Completed!")
                                 .font(.system(size: 22, weight: .bold, design: .rounded))
                             
-                            Text("Great job! Your tuition fees will now be adjusted. Make sure to keep the digital copy of your ISEE safe.")
+                            Text("Great job! Make sure to keep the digital copy of your ISEE safe.")
                                 .font(.system(size: 14))
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)

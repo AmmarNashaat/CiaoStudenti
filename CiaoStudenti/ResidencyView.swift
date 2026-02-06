@@ -6,7 +6,7 @@ struct ResidencyView: View {
     
     let steps: [StepItem] = [
         StepItem(stepNumber: 1, title: "RESIDENCY APPLICATION",
-                 description: "Email docs to: cambi.residenza@pec.comune.napoli.it or visit the Comune office with your physical documents.",
+                 description: "Email docs to comune or Visit the Comune office with your physical documents.",
                  iconName: "envelope.fill"),
         
         StepItem(stepNumber: 2, title: "POLICE CHECK",
@@ -22,7 +22,7 @@ struct ResidencyView: View {
                  iconName: "calendar.badge.plus"),
         
         StepItem(stepNumber: 5, title: "RECEIVE ID CARD",
-                 description: "Your physical Carta d'Identità will arrive by mail within 6-10 working days.",
+                 description: "Your physical Carta d'Identità will arrive by mail within 6-10 working days or you collect physicaly at the Anagrafe office",
                  iconName: "person.text.rectangle.fill")
     ]
     
@@ -92,7 +92,8 @@ struct ResidencyView: View {
                         VStack(spacing: 12) {
                             Text("🇮🇹 Benvenuto!")
                                 .font(.system(size: 24, weight: .bold, design: .rounded))
-                            Text("You are now an official resident with an Italian ID card. This unlocks lower bills and full ASL healthcare!")
+                            Text("You have completed the steps to get the Identity Card.")
+                            Text("Enjoy your stay!")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)

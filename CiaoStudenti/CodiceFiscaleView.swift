@@ -1,7 +1,6 @@
 import SwiftUI
 
 // --- SHARED DATA MODEL ---
-// This allows the view to understand what a 'StepItem' is.
 struct StepItem: Identifiable {
     let id = UUID()
     let stepNumber: Int
@@ -24,7 +23,7 @@ struct CodiceFiscaleView: View {
                  iconName: "iphone.badge.play"),
         
         StepItem(stepNumber: 3, title: "OFFICE VISIT",
-                 description: "Go to the office with: Passport, Visa, and Pre-enrollment letter.",
+                 description: "Go to the office with: Passport, Visa, and Pre-enrollment letter & Fill the form",
                  iconName: "doc.on.doc.fill"),
         
         StepItem(stepNumber: 4, title: "RECEIVE PAPER COPY",
@@ -85,11 +84,11 @@ struct CodiceFiscaleView: View {
                                 .foregroundColor(.blue)
                                 .padding(.top, 10)
                             
-                            Text("Codice Fiscale Ready!")
+                            Text("Well Done!!")
                                 .font(.system(size: 22, weight: .bold, design: .rounded))
                             
-                            Text("You've conquered the bureaucracy! You can now officially sign contracts and open your Italian bank account.")
-                                .font(.system(size: 14))
+                            Text("Steps Completed...")
+                                .font(.system(size: 18))
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 20)
@@ -129,7 +128,10 @@ struct CodiceFiscaleView: View {
             }
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: { dismiss() }) {
+                    // Match the consistent style we used in TransportView
                     Image(systemName: "chevron.left")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.black)
                         .foregroundColor(.black)
                         .fontWeight(.bold)
                 }
@@ -158,12 +160,20 @@ struct StepRowView: View {
             HStack(spacing: 16) {
                 ZStack {
                     Circle()
-                        .fill(isCompleted ? Color.green.opacity(0.1) : (isActive ? Color.blue.opacity(0.1) : Color.gray.opacity(0.1)))
+                        .fill(isCompleted ? Color.green.opacity(0.15) : (isActive ? Color.blue.opacity(0.1) : Color.gray.opacity(0.05)))
                         .frame(width: 54, height: 54)
                     
-                    Image(systemName: step.iconName)
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(isCompleted ? .green : (isActive ? .blue : .gray))
+                    // Logic to swap the icon for a checkmark
+                    if isCompleted {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 26)) // Slightly larger for better visibility
+                            .foregroundColor(.green)
+                            .transition(.scale.combined(with: .opacity))
+                    } else {
+                        Image(systemName: step.iconName)
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(isActive ? .blue : .gray)
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -183,11 +193,12 @@ struct StepRowView: View {
             .cornerRadius(16)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(isCompleted ? Color.green.opacity(0.3) : (isActive ? Color.blue.opacity(0.4) : Color.clear), lineWidth: 1)
+                    .stroke(isCompleted ? Color.green.opacity(0.4) : (isActive ? Color.blue.opacity(0.4) : Color.clear), lineWidth: 1.5)
             )
             .opacity(isActive || isCompleted ? 1 : 0.6)
         }
         .buttonStyle(.plain)
+        .disabled(isCompleted) // Optional: prevents re-clicking finished steps
     }
 }
 

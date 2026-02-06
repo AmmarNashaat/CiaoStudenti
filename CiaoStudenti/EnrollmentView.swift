@@ -10,15 +10,15 @@ struct EnrollmentView: View {
                  iconName: "globe"),
         
         StepItem(stepNumber: 2, title: "REGISTRATION",
-                 description: "Access the university's web portal (Segreteria Online) to create your student ID.",
+                 description: "Vist the Segreteria Office with the Original Documents & Photocopy of your Documents.",
                  iconName: "laptopcomputer"),
         
         StepItem(stepNumber: 3, title: "TUITION FEES",
                  description: "Pay the first installment via PagoPA to activate your student status.",
                  iconName: "eurosign.circle.fill"),
         
-        StepItem(stepNumber: 4, title: "DOCUMENT UPLOAD",
-                 description: "Upload your DoV or CIMEA certificate to the portal for final verification.",
+        StepItem(stepNumber: 4, title: "UNIVERSITY EMAIL CONFIRMATION",
+                 description: "You will receive email from the University once your registration is successfully completed.",
                  iconName: "arrow.up.doc.fill")
     ]
     
@@ -76,11 +76,12 @@ struct EnrollmentView: View {
                                 .font(.system(size: 60))
                                 .foregroundColor(.purple)
                             
-                            Text("🎓 Officially a Student!")
+                            Text("🎓 All Steps Logged!")
                                 .font(.system(.title2, design: .rounded).bold())
                                 .foregroundColor(.purple)
                             
-                            Text("Welcome to the community! Your student status is now active. Don't forget to download your 'Libretto' on the app.")
+                            Text("Welcome to the community!")
+                            Text("Check your inbox for a message from the University—once it arrives, you're all set to log in and setup your student email and Microsoft 365.")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                                 .multilineTextAlignment(.center)

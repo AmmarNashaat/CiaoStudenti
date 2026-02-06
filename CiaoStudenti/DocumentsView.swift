@@ -28,6 +28,13 @@ struct CategoriesView: View {
                         imageName: "information",
                         destination: { AnyView(InformationView()) }
                     )
+                    
+                    CategoryCard(
+                        title: "ABOUT US",
+                        subtitle: "Who we are!!",
+                        imageName: "aboutus",
+                        destination: { AnyView(AboutUsView()) }
+                    )
                 }
                 .padding(.top, 10)
                 .padding(.horizontal)
@@ -38,7 +45,7 @@ struct CategoriesView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("CATEGORIES")
-                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .font(.system(size: 22, weight: .black, design: .rounded))
                     .foregroundColor(.primary)
             }
         }

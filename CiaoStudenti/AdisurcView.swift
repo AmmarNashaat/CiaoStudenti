@@ -38,7 +38,7 @@ struct AdisurcView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("ADISURC")
-                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .font(.system(size: 22, weight: .black, design: .rounded))
                     .foregroundColor(.primary)
             }
             ToolbarItem(placement: .navigationBarLeading) {

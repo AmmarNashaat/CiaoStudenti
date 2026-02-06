@@ -118,7 +118,7 @@ struct DocumentsView: View {
 
                 Text("DOCUMENTS")
 
-                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .font(.system(size: 22, weight: .black, design: .rounded))
 
                     .foregroundColor(.primary)
 

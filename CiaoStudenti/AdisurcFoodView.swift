@@ -19,7 +19,7 @@ struct AdisurcFoodView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                         
-                        Link(destination: URL(string: "https://apps.apple.com/it/app/adisurc-eat/id1528174524")!) {
+                        Link(destination: URL(string: "https://apps.apple.com/it/app/adisurc-eat/id6444835521")!) {
                             HStack {
                                 Image(systemName: "arrow.down.app.fill")
                                 Text("Download ADISURC.EAT")

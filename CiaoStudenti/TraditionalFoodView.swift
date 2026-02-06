@@ -5,12 +5,14 @@ struct Dish: Identifiable {
     let name: String
     let category: String
     let description: String
-    let bestSpot: String // New field for specific recommendations
+    let bestSpot: String
     let icon: String
     let priceRange: String
 }
 
 struct TraditionalFoodView: View {
+    @Environment(\.dismiss) var dismiss // Added for the back button
+    
     let dishes = [
         Dish(name: "Pizza Margherita",
              category: "The Icon",
@@ -49,18 +51,48 @@ struct TraditionalFoodView: View {
     ]
 
     var body: some View {
-        NavigationStack {
+        ZStack {
+            Color(.systemGray6).ignoresSafeArea()
+            
             ScrollView {
                 VStack(spacing: 20) {
+                    // HERO SECTION (Optional, matches your other pages)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Naples Food Guide")
+                            .font(.system(size: 26, weight: .black, design: .rounded))
+                        Text("Eat your way through the historic center like a true Neapolitan.")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+
                     ForEach(dishes) { dish in
                         FoodCard(dish: dish)
                     }
                 }
-                .padding()
+                .padding(.bottom, 30)
             }
-            .navigationTitle("Eat Like a Local")
-            .background(Color(.systemGray6))
         }
+        // --- BOLD TOOLBAR START ---
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("EAT LIKE A LOCAL")
+                    .font(.system(size: 18, weight: .black, design: .rounded))
+                    .foregroundColor(.primary)
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
+                }
+            }
+        }
+        // --- BOLD TOOLBAR END ---
     }
 }
 
@@ -126,8 +158,8 @@ struct FoodCard: View {
                         HStack(spacing: 4) {
                             Text(dish.bestSpot)
                                 .font(.system(size: 13, weight: .bold, design: .rounded))
-                                .foregroundColor(.blue) // Standard link color
-                                .underline() // Makes it look like a web link
+                                .foregroundColor(.blue)
+                                .underline()
                             
                             Image(systemName: "arrow.up.right")
                                 .font(.system(size: 10, weight: .bold))
@@ -137,7 +169,7 @@ struct FoodCard: View {
                     Spacer()
                 }
             }
-            .buttonStyle(PlainButtonStyle()) // Keeps the text color blue instead of graying out
+            .buttonStyle(PlainButtonStyle())
         }
         .padding(16)
         .background(Color.white)
@@ -146,7 +178,6 @@ struct FoodCard: View {
         .padding(.horizontal)
     }
     
-    // Function to open the spot in Maps
     func openMap(for spot: String) {
         let address = spot.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         if let url = URL(string: "maps://?q=\(address)") {
